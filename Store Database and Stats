@@ -1,0 +1,40 @@
+--Design a store and display items with their shelf quantity, dollar value, and number of aisle they are found in. 
+
+CREATE TABLE Store (id integer primary key, name text, quantity integer, Dollars integer, aisle integer);
+
+INSERT INTO Store VALUES (1,"bananas", 20, 1, 1); 
+INSERT INTO Store VALUES (2, "Apples", 44, 2, 1);
+INSERT INTO Store VALUES (3, "Lettuce", 13, 3, 2);
+INSERT INTO Store VALUES (4, "Tomato", 12, 2.5, 2);
+INSERT INTO Store VALUES (5, "Grapes", 68, 12, 1);
+INSERT INTO Store VALUES (6, "Salsa", 10, 6, 3);
+INSERT INTO Store VALUES (7, "Guacamole", 30, 8, 3);
+INSERT INTO Store VALUES (8, "Chips", 18, 8.20, 4);
+INSERT INTO Store VALUES (9, "Tuna", 50, 1.5, 5);
+INSERT INTO Store VALUES (10,"Ham", 10, 24, 5);
+INSERT INTO Store VALUES (11, "Toilet Paper", 19, 23, 8);
+INSERT INTO Store VALUES (12, "Sanitizer", 40, 3.50, 9);
+INSERT INTO Store VALUES (13, "Formula", 0, 52, 12);
+INSERT INTO Store VALUES (14, "Water", 78, 1.75, 10);
+INSERT INTO Store VALUES (15, "Juice", 7, 6, 7);
+
+
+
+-- Show total number of items on the shelfs. SUM = adding up.
+
+SELECT SUM (quantity) FROM Store;
+
+
+-- Only show the biggest number in the dollars column. MAX = maximunm.
+
+SELECT MAX (dollars) FROM Store;
+
+
+--Instead of order by id, this displays the aisle numbers ascending. Could also specify with 'asc'/'desc'.
+
+SELECT * FROM Store ORDER BY aisle;
+
+
+--say I have a limited budget and time. This way I only see items under 20 dollars and withing the first 10 aisles. using </>/=. 
+
+SELECT * FROM store WHERE Dollars < 20 and aisle < 10;
