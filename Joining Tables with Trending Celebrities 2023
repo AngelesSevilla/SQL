@@ -1,0 +1,95 @@
+CREATE TABLE Celebrities2023 (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+Name TEXT,
+Age INTEGER,
+Height INTEGER,
+Net_worth_$ INTEGER,
+Instagram_followers INTEGER,
+Profession TEXT,
+Partner_name TEXT);
+
+INSERT INTO Celebrities2023 VALUES (1, "Taylor Swift", 33, "5'11", 570000000, "260.2M", "Musician, Actress, Author", "Joseph matthew Alwyn");
+INSERT INTO Celebrities2023 VALUES (2,"Kylie Jenner", 25, "5'5" , 1000000000,"391.3M", "Media Personality & Business Owner", "Travis Scott");
+INSERT INTO Celebrities2023 VALUES (3, "Justin Bieber", 29, "5'7", 300000000, "289.9M", "Musician, Model", "Hailey Bieber" );
+INSERT INTO Celebrities2023 VALUES (4, "Jennifer Lopez", 53, "5'4", 400000000, "245.6M", "Actress, Musician", "Ben Affleck");
+INSERT INTO Celebrities2023 VALUES (5, "Rihanna", 35, "5'7", 1400000000, "151M", "Musician, Business Owner", "A$AP Rocky");
+INSERT INTO Celebrities2023 VALUES (6, "Miley Cyrus", 30, "5'4", 160000000, "208.4M", "Musician, Actress", "Maxx Morando");
+INSERT INTO Celebrities2023 VALUES (7, "Harry Styles", 29, "6'", 120000000, "48.8M", "Actor, Musician, Model", NULL);
+INSERT INTO Celebrities2023 VALUES (8, "Adele", 33, "5'9", 225000000, "53.5M", "Musician", "Rich Paul");
+INSERT INTO Celebrities2023 VALUES (9, "Billie Eilish", 21, "5'3", 30000000, "108.1M", "Musician, Actress", "Jesse Rutherford");
+INSERT INTO Celebrities2023 VALUES (10, "Austin Butler", 31, "6'", 4000000, "3.8M", "Actor, Musician", "Kaia Jordan Gerber");
+INSERT INTO Celebrities2023 VALUES (11, "Jenna Ortega", 20, "5'1", 3000000, "40.6M", "Actress, Youtuber", NULL);
+INSERT INTO Celebrities2023 VALUES (12, "Lizzo", 35, "5'10", 40000000, "13.4M", "Musician, Actresss", "Myke Wright");
+INSERT INTO Celebrities2023 VALUES (13, "Bad Bunny", 29, "5'11", 40000000, "45.6M", "Musician, Actor, Wrestler", "Kendall Jenner");
+INSERT INTO Celebrities2023 VALUES (14, "Pedro Pascal", 48, "5'11", 10000000, "8.3M", "Actor", Null);
+INSERT INTO Celebrities2023 VALUES (15, "Kim Kardashian West", 42, "5'2", 1200000000, "358M", "Media Personality, Business Owner, Model, Lawyer", NULL);
+
+CREATE TABLE Celebrity_Partners (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+Name TEXT,
+Age INTEGER,
+Height INTEGER,
+Net_worth_$ INTEGER,
+Profession TEXT,
+Relationship_Status TEXT,
+Children_together INTEGER);
+
+INSERT INTO Celebrity_Partners VALUES (1, "Joseph matthew Alwyn", 32, "6'1", 4000000, "Actor", "Dating", null);
+INSERT INTO Celebrity_Partners VALUES (2, "Travis Scott", 32, "5'8", 80000000, "Musician", "Dating", 2);
+INSERT INTO Celebrity_Partners VALUES (3, "Hailey Bieber", 26, "5'6", 20000000, "Model", "Married", null);
+INSERT INTO Celebrity_Partners VALUES (4, "Ben Affleck", 50, "6'2", 150000000, "Actor, Producer", "Married", null);
+INSERT INTO Celebrity_Partners VALUES (5, "A$AP Rocky", 34, "5'9", 20000000, "Musician", "Dating", 1);
+INSERT INTO Celebrity_Partners VALUES (6, "Maxx Morando", 24, "5'6", 2000000, "Musician", "Dating", null);
+INSERT INTO Celebrity_Partners VALUES (7,"Rich Paul", 41, "6'1", 120000000, "Sports Agent & Business Owner", "Engaged", 1);
+INSERT INTO Celebrity_Partners VALUES (8, "Jesse Rutherford", 31, "6'", 4000000, "Actor, Musician", "Dating", null);
+INSERT INTO Celebrity_Partners VALUES (9, "Kaia Jordan Gerber", 21, "5'10", 6000000,  "Model, Actress", "Dating", null);
+INSERT INTO Celebrity_Partners VALUES (10, "Myke Wright", 35, "5'11", 1500000, "Comedian, Actor", "Dating", null);
+INSERT INTO Celebrity_Partners VALUES (11, "Kendall Jenner", 27, "5'11", 4000000, "Media Personality, Model", "Dating", null);
+
+
+/*Couples beside eachoher, along with their height measurements and age. From yougest celebrity to oldest.*/
+
+SELECT c.name as Trending_Star, c.height, c.age, cp.name as Partner, cp.height, cp.age FROM Celebrities2023 C
+JOIN Celebrity_Partners CP
+ON C.Partner_name=CP.Name
+Order by C.age asc;
+
+/*Groups clebrities based on their relationship status as well as says how many are in each category of status. as well as how many couples have children together according to their status as well.*/
+
+SELECT COUNT(C.name) as How_Many, CP.Relationship_status, COUNT (CP.Children_Together) as With_Children
+FROM Celebrities2023 C
+LEFT JOIN Celebrity_Partners CP
+ON C.Partner_name=CP.Name
+Group By Relationship_Status;
+
+/*What Celebrities have a partner as tall or taller than 6'?*/
+
+SELECT C.Name, C.Height
+FROM Celebrities2023 as C
+JOIN Celebrity_Partners as CP
+ON C.Partner_name=CP.Name
+WHERE CP.Height >= "6'0";
+
+/*These people have made a great amount of net worth for themselves financially. How much would it all be together along with the partners? yupe, that number is well over 5Billion.*/
+
+SELECT SUM(C.Net_worth_$) + SUM(CP.Net_worth_$)
+AS Total_Net_Worth_$
+From Celebrities2023 C
+LEFT JOIN Celebrity_Partners CP
+ON C.Partner_name=CP.Name;
+
+/*A lot of different professions and career paths involved. Which couples share a passion for music? */
+
+SELECT C.name, C.age, C.profession, CP.name, CP.age, CP.profession
+FROM Celebrities2023 C 
+JOIN Celebrity_Partners as CP
+ON C.Partner_name=CP.Name
+WHERE C.Profession LIKE "%Musician%" and CP.Profession Like "%Musician%";
+
+/*Age is just a number. Which couples share that number?*/
+
+SELECT C.name, C.age,CP.name, cp.age
+FROM Celebrities2023 C 
+JOIN Celebrity_Partners as CP
+ON C.Partner_name=CP.Name
+WHERE C.age = CP.age;
