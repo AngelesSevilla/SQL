@@ -1,0 +1,75 @@
+In this SQL code, I'm querying a database that's holding Nexflix data to answer questions about the data.
+
+
+/*How many columns in the database*/
+
+SELECT COUNT(*)
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people"
+Limit 3;
+
+
+/*IN unalphatetical order, find out the last 7 directors, titles produced and its rating.*/
+
+SELECT cnp.director, cnti.title, cnti.rating
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" cnp
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" cnti
+ON cnp.show_id = cnti.show_id
+ORDER BY cnp.director DESC
+Limit 7;
+
+
+/*How many movie titles are there in the database? (movies only, not tv shows)*/
+
+SELECT COUNT (title)
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE Type = 'Movie';
+
+
+/*When was the most recent batch of tv shows and/or movies added to the database?*/
+
+SELECT cnti.date_added
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" as cnp
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" as cnti
+ON cnp.show_id = cnti.show_id
+ORDER BY cnti.release_year DESC
+Limit 1;
+
+/*Or*/
+
+select max(date(date_added))
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info";
+
+
+/*List all the movies and tv shows in alphabetical order.*/
+
+SELECT title
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+ORDER BY title ASC;
+
+
+/*Who was the Director for the movie Bright Star?*/
+
+select cnp.Director
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" cnp
+LEFT JOIN "CharlotteChaze/BreakIntoTech"."netflix_titles_info" cnti
+ON cnp.show_id=cnti.show_id
+WHERE cnti.title='Bright Star';
+
+
+/*What is the oldest movie in the database and what year was it made?*/
+
+SELECT title, release_year
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type='Movie'
+ORDER BY release_year ASC
+LIMIT 1;
+
+/*Or*/
+
+SELECT title, release_year 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie'
+AND release_year <= 
+(SELECT MIN(release_year) 
+FROM "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+WHERE type = 'Movie'); 
