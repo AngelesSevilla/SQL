@@ -1,0 +1,79 @@
+In this SQL, I'm querying a database with multiple tables in it to quantify statistics about customer and order data. 
+
+/*1 - how many ordes were placed in January?*/
+
+Select COUNT(*)
+From BIT_DB.JanSales;
+
+
+/*2- how many of those orders were an iphone?*/
+
+Select count (*)
+From BIT_DB.JanSales
+Where product = 'iPhone';
+
+
+/*3- Select the customer account numbers for all the orders that were placed in February.*/
+
+Select c.acctnum
+From BIT_DB.FebSales s
+Inner Join BIT_DB.customers c
+ON s.orderID = c.order_id;
+
+
+/*4- which product was the cheapest one sold in january and what was the price?*/
+
+select Product, price
+from BIT_DB.JanSales
+Where Price in 
+(Select Min( Price) 
+From BIT_DB.JanSales)
+Limit 1;
+ 
+/*or*/
+
+SELECT product, min(price) 
+FROM BIT_DB.JanSales Jan 
+GROUP BY product, price 
+ORDER BY price ASC
+LIMIT 1;
+
+
+/* 5- What is the total revenue for each product sold in January?*/
+
+Select Sum(quantity) * Price as Revenue
+From BIT_DB.JanSales
+Group by Product;
+
+
+/*6- Whih products were sold in February at '548 Lincoln St, Seattle, WA 98101', how many of each were sold, and what was the total revenue?*/
+select sum(Quantity), product, sum(quantity)*price as revenue
+FROM BIT_DB.FebSales 
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+
+/*7- How many customers ordered more than 2 products at the time in February, and what was the average amount spent for those customers?*/
+
+select count(distinct cust.acctnum) as How_many, avg(quantity*price) as Average_price
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON FEB.orderid=cust.order_id
+WHERE Feb.Quantity>2
+AND length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+
+/*other queries*/
+
+SELECT orderid, quantity, price, product
+FROM BIT_DB.JanSales;
+
+SELECT SUM(quantity), price, product
+FROM BIT_DB.JanSales
+GROUP BY product, price;
+
+SELECT SUM(quantity)*price as Revenue
+,product
+FROM BIT_DB.JanSales
+GROUP BY product
