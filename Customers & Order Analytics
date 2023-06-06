@@ -64,7 +64,7 @@ AND length(orderid) = 6
 AND orderid <> 'Order ID';
 
 
-/*8- All products sold in Los Angeles in February, include how many of each were sold*/
+/*8- List all products sold in Los Angeles in February, include how many of each were sold*/
 
 Select Product, SUM(Quantity)
 From BIT_DB.FebSales
