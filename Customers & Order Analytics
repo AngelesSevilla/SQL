@@ -64,16 +64,9 @@ AND length(orderid) = 6
 AND orderid <> 'Order ID';
 
 
-/*other queries*/
+/*8- All products sold in Los Angeles in February, include how many of each were sold*/
 
-SELECT orderid, quantity, price, product
-FROM BIT_DB.JanSales;
-
-SELECT SUM(quantity), price, product
-FROM BIT_DB.JanSales
-GROUP BY product, price;
-
-SELECT SUM(quantity)*price as Revenue
-,product
-FROM BIT_DB.JanSales
-GROUP BY product
+Select Product, SUM(Quantity)
+From BIT_DB.FebSales
+Where Location like'%Los Angeles%'
+Group By product;
