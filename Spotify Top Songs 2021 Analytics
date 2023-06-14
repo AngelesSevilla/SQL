@@ -1,0 +1,103 @@
+For this project, I downloaded Spotify data from Kaggle.
+Then I created a table to insert Spotify data into the BIT_DataBase.
+Finally, I performed analytics on the data using SQL. 
+
+/* Spotify Top 50 2021 songs into. */
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness decimal(8,7) NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL );
+
+/*Display all data*/
+
+Select * From BIT_DB.Spotifydata;
+
+/*Who are the top 10 artists based on popularity?*/
+
+SELECT artist_name, track_name, popularity
+FROM BIT_DB.spotifydata
+ORDER BY popularity desc
+LIMIT 10;
+
+/*What songs by 'BTS' were popular in 2021 and how can we find them?*/
+
+Select artist_name, track_name, Track_id
+From BIT_DB.Spotifydata 
+Where artist_name = "BTS";
+
+/*What is the average danceability by artist and track?*/
+
+Select artist_name, Track_name, AVG(danceability)
+From BIT_DB.Spotifydata
+Group by artist_name
+Order by danceability;
+
+/*What artist has the highest tempo?*/
+
+Select artist_name, Max(tempo) as tempo, track_name
+From BIT_DB.Spotifydata;
+
+/*Which artist had the least liveness*/
+
+Select artist_name, track_name, MIN(liveness) 
+From BIT_DB.Spotifydata;
+
+/*What artist released the Shortest song?*/
+
+Select artist_name, MIN(duration_ms), track_name
+From BIT_DB.Spotifydata;
+
+/*low acoustics and high energy? wich songs had more than average energy and less than average acousticness?*/
+
+Select artist_name, track_name
+From BIT_DB.Spotifydata
+Where energy > (select AVG(energy)
+From BIT_DB.Spotifydata)
+And acousticness < (select AVG(acousticness)
+From BIT_DB.Spotifydata);
+
+/*Which songs were the most vocal? with more than average speechiness and less than average instrumentalness?*/
+
+Select artist_name, track_name
+From BIT_DB.Spotifydata
+Where speechiness > (select AVG(Speechiness)
+From BIT_DB.Spotifydata)
+And instrumentalness < (select AVG(instrumentalness)
+From BIT_DB.Spotifydata);
+
+/* What's the average danceability for the 10 most popular songs?*/
+
+Select AVG(danceability) 
+From BIT_DB.Spotifydata
+Where popularity in (Select MAX(Popularity)
+From BIT_DB.Spotifydata
+Group By track_name
+Limit 10);
+
+/*How many hours would listening to all 50 songs take?*/
+
+Select (Sum(duration_ms)/60) as hours
+From BIT_DB.Spotifydata;
+
+/*Determin the avg popularity, danceability, and energy by artist and track. */
+
+SELECT artist_name, track_name, avg(popularity), avg(danceability), avg(energy)
+FROM BIT_DB.spotifydata
+GROUP BY artist_name, track_name;
+
