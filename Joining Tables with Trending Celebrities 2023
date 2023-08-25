@@ -47,7 +47,7 @@ INSERT INTO Celebrity_Partners VALUES (10, "Myke Wright", 35, "5'11", 1500000, "
 INSERT INTO Celebrity_Partners VALUES (11, "Kendall Jenner", 27, "5'11", 4000000, "Media Personality, Model", "Dating", null);
 
 
-/*Couples beside eachoher, along with their height measurements and age. From yougest celebrity to oldest.*/
+/*Couples beside eachother, along with their height measurements and age. From yougest celebrity to oldest.*/
 
 SELECT c.name as Trending_Star, c.height, c.age, cp.name as Partner, cp.height, cp.age FROM Celebrities2023 C
 JOIN Celebrity_Partners CP
